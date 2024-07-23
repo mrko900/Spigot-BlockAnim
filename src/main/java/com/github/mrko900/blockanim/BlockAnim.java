@@ -5,6 +5,9 @@ import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -15,17 +18,31 @@ public class BlockAnim {
     private int x0, y0, z0, x1, y1, z1;
     private List<Phase> phases = new ArrayList<>();
     private World world;
+    private Plugin plugin;
 
     public class Phase {
         int duration;
         String[][][] blockData = new String[x1 - x0 + 1][y1 - y0 + 1][z1 - z0 + 1];
     }
 
+    private int currentPhase;
+
+    private class Task extends BukkitRunnable {
+        private int i;
+
+        Task(int i) {
+            this.i = i;
+        }
+
+        @Override
+        public void run() {
+            new Task((i + 1) % phases.size()).runTaskLater(plugin, phases.get(i).duration);
+            setPhase(i);
+        }
+    }
+
     public void start() {
-//        for (Phase phase : phases) {
-//
-//        }
-        setPhase(0);
+        new Task(0).run();
     }
 
     public void setPhase(int i) {
@@ -40,16 +57,17 @@ public class BlockAnim {
         }
     }
 
-    public static BlockAnim fromFile(File file, Server server) {
+    public static BlockAnim fromFile(File file, Plugin plugin) {
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
         BlockAnim anim = new BlockAnim();
-        anim.world = server.getWorld(UUID.fromString(config.getString("world")));
+        anim.world = plugin.getServer().getWorld(UUID.fromString(config.getString("world")));
         anim.x0 = config.getInt("x0");
         anim.x1 = config.getInt("x1");
         anim.y0 = config.getInt("y0");
         anim.y1 = config.getInt("y1");
         anim.z0 = config.getInt("z0");
         anim.z1 = config.getInt("z1");
+        anim.plugin = plugin;
         int w = anim.x1 - anim.x0 + 1;
         int h = anim.y1 - anim.y0 + 1;
         int d = anim.z1 - anim.z0 + 1;

@@ -3,14 +3,15 @@ package com.github.mrko900.blockanim;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 
 public class PlayAnimCommand implements CommandExecutor {
-    private String pluginFolder;
+    private Plugin plugin;
 
-    public PlayAnimCommand(String pluginFolder) {
-        this.pluginFolder = pluginFolder;
+    public PlayAnimCommand(Plugin plugin) {
+        this.plugin = plugin;
     }
 
     @Override
@@ -19,8 +20,9 @@ public class PlayAnimCommand implements CommandExecutor {
             return false;
         }
         String name = args[0];
-        BlockAnim anim = BlockAnim.fromFile(new File(pluginFolder + "\\" + name + ".yml"), sender.getServer());
-        sender.getServer().broadcastMessage("msgmsg");
+        BlockAnim anim = BlockAnim.fromFile(
+                new File(plugin.getDataFolder().getPath() + "\\" + name + ".yml"), plugin
+        );
         anim.start();
         return true;
     }
