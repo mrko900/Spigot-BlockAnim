@@ -75,6 +75,7 @@ public class AnimBuilder {
         yml.set("y1", y1);
         yml.set("z0", z0);
         yml.set("z1", z1);
+        yml.set("world", world.getUID().toString());
         int i = 0;
         for (AnimPhase phase : phases) {
             String s = "phases." + i;

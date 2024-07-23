@@ -19,8 +19,9 @@ public class PlayAnimCommand implements CommandExecutor {
             return false;
         }
         String name = args[0];
-        BlockAnim anim = BlockAnim.fromFile(new File(pluginFolder + "\\" + name + ".yml"));
-
+        BlockAnim anim = BlockAnim.fromFile(new File(pluginFolder + "\\" + name + ".yml"), sender.getServer());
+        sender.getServer().broadcastMessage("msgmsg");
+        anim.start();
         return true;
     }
 }

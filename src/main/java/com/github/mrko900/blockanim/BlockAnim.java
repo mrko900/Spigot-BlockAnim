@@ -1,6 +1,7 @@
 package com.github.mrko900.blockanim;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -8,6 +9,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class BlockAnim {
     private int x0, y0, z0, x1, y1, z1;
@@ -38,10 +40,10 @@ public class BlockAnim {
         }
     }
 
-    public static BlockAnim fromFile(File file, World world) {
+    public static BlockAnim fromFile(File file, Server server) {
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
         BlockAnim anim = new BlockAnim();
-        anim.world = world;
+        anim.world = server.getWorld(UUID.fromString(config.getString("world")));
         anim.x0 = config.getInt("x0");
         anim.x1 = config.getInt("x1");
         anim.y0 = config.getInt("y0");
@@ -55,14 +57,17 @@ public class BlockAnim {
         for (String key : phases.getKeys(false)) {
             Phase phase = anim.new Phase();
             int i = 0;
-            for (Object o : phases.getList(key)) {
-                int x = i / w;
-                int y = (i % w) / h;
-                int z = ((i % w) % h) / d;
+            ConfigurationSection phaseSection = phases.getConfigurationSection(key);
+            phase.duration = phaseSection.getInt("duration");
+            for (Object o : phaseSection.getList("blocks")) {
+                int x = i / (h * d);
+                int y = i % (h * d) / d;
+                int z = i % (h * d) % d;
                 String blockData = (String) o;
                 phase.blockData[x][y][z] = blockData;
                 ++i;
             }
+            anim.phases.add(phase);
         }
         return anim;
     }
