@@ -1,0 +1,10 @@
+main: com.github.mrko900.blockanim.BlockAnimPlugin
+name: mplug
+version: 0.1
+author: mrko900
+api-version: '1.21'
+commands:
+  newanim:
+    usage: /<command>
+  saveanim:
+    usage: /<command> [name]
