@@ -8,11 +8,11 @@ import org.bukkit.entity.Player;
 import java.io.IOException;
 
 public class SaveAnimCommand implements CommandExecutor {
-    private AnimBuilderListener animBuilderListener;
+    private AnimBuilderManager animBuilderManager;
     private String pluginFolder;
 
-    public SaveAnimCommand(AnimBuilderListener listener, String pluginFolder) {
-        this.animBuilderListener = listener;
+    public SaveAnimCommand(AnimBuilderManager listener, String pluginFolder) {
+        this.animBuilderManager = listener;
         this.pluginFolder = pluginFolder;
     }
 
@@ -26,13 +26,13 @@ public class SaveAnimCommand implements CommandExecutor {
         if (args.length != 1) {
             return false;
         }
-        AnimBuilder builder = animBuilderListener.getAnimBuilder(player);
+        AnimBuilder builder = animBuilderManager.getAnimBuilder(player);
         if (builder == null) {
             sender.sendMessage("...");
             return true;
         }
         builder.setName(args[0]);
-        animBuilderListener.removePlayer(player);
+        animBuilderManager.removePlayer(player);
         try {
             builder.saveAnim(pluginFolder);
         } catch (IOException e) {

@@ -6,5 +6,11 @@ api-version: '1.21'
 commands:
   newanim:
     usage: /<command>
+  savephase:
+    usage: /<command> [duration]
   saveanim:
+    usage: /<command> [name]
+  playanim:
+    usage: /<command> [name]
+  stopanim:
     usage: /<command> [name]

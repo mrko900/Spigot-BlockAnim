@@ -6,9 +6,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class NewAnimCommand implements CommandExecutor {
-    private AnimBuilderListener listener;
+    private AnimBuilderManager listener;
 
-    public NewAnimCommand(AnimBuilderListener listener) {
+    public NewAnimCommand(AnimBuilderManager listener) {
         this.listener = listener;
     }
 

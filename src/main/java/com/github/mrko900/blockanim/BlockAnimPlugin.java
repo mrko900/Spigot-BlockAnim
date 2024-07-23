@@ -7,9 +7,11 @@ public class BlockAnimPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         super.onEnable();
-        AnimBuilderListener animBuilderListener = new AnimBuilderListener();
-        Bukkit.getPluginManager().registerEvents(animBuilderListener, this);
-        getCommand("newanim").setExecutor(new NewAnimCommand(animBuilderListener));
-        getCommand("saveanim").setExecutor(new SaveAnimCommand(animBuilderListener, getDataFolder().getPath()));
+        AnimBuilderManager animBuilderManager = new AnimBuilderManager();
+        Bukkit.getPluginManager().registerEvents(animBuilderManager, this);
+        getCommand("newanim").setExecutor(new NewAnimCommand(animBuilderManager));
+        getCommand("saveanim").setExecutor(new SaveAnimCommand(animBuilderManager, getDataFolder().getPath()));
+        getCommand("savephase").setExecutor(new SavePhaseCommand(animBuilderManager));
+        getServer().getWorld("as").getUID();
     }
 }
