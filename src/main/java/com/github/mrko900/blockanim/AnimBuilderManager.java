@@ -16,21 +16,32 @@ public class AnimBuilderManager implements Listener {
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
         AnimBuilder anim = animMap.get(event.getPlayer().getUniqueId());
-        if (anim == null || anim.getState() == AnimBuilder.State.P2_SET) {
+        if (anim == null || anim.isFirstPointSet() && anim.isSecondPointSet()) {
             return;
         }
         event.setCancelled(true);
-        anim.addPoint(event.getBlock().getX(), event.getBlock().getY(), event.getBlock().getZ());
-        switch (anim.getState()) {
-            case P1_SET:
-                event.getPlayer().sendMessage("first point set");
-                break;
-            case P2_SET:
-                event.getPlayer().sendMessage("second point set");
-                break;
-            default:
-                throw new AssertionError();
+        if (!anim.isFirstPointSet()) {
+            event.getPlayer().sendMessage("first point set");
+        } else {
+            event.getPlayer().sendMessage("second point set");
         }
+        anim.addPoint(event.getBlock().getX(), event.getBlock().getY(), event.getBlock().getZ());
+    }
+
+    public void setFirstPoint(Player player, int x, int y, int z) {
+        AnimBuilder anim = animMap.get(player.getUniqueId());
+        if (anim == null) {
+            return;
+        }
+        anim.setFirstPoint(x, y, z);
+    }
+
+    public void setSecondPoint(Player player, int x, int y, int z) {
+        AnimBuilder anim = animMap.get(player.getUniqueId());
+        if (anim == null) {
+            return;
+        }
+        anim.setSecondPoint(x, y, z);
     }
 
     public void addPlayer(Player player) {

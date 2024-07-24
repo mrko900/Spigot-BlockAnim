@@ -8,14 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AnimBuilder {
-    public enum State {
-        EMPTY, P1_SET, P2_SET
-    }
-
-    private State state = State.EMPTY;
     private String name;
     private List<AnimPhase> phases = new ArrayList<>();
     private World world;
+
+    private boolean p1set, p2set;
     private int x0, y0, z0, x1, y1, z1;
 
     public AnimBuilder(World world) {
@@ -36,33 +33,47 @@ public class AnimBuilder {
     }
 
     public void addPoint(int x, int y, int z) {
-        if (state == State.P2_SET) {
+        if (p1set && p2set) {
             throw new IllegalStateException("bounds already set");
-        } else if (state == State.EMPTY) {
-            x0 = x;
-            y0 = y;
-            z0 = z;
-            state = State.P1_SET;
-        } else if (state == State.P1_SET) {
-            x1 = x;
-            y1 = y;
-            z1 = z;
-            if (x0 > x1) {
-                int tmp = x0;
-                x0 = x1;
-                x1 = tmp;
-            }
-            if (y0 > y1) {
-                int tmp = y0;
-                y0 = y1;
-                y1 = tmp;
-            }
-            if (z0 > z1) {
-                int tmp = z0;
-                z0 = z1;
-                z1 = tmp;
-            }
-            state = State.P2_SET;
+        }
+        if (!p1set) {
+            setFirstPoint(x, y, z);
+        } else {
+            setSecondPoint(x, y, z);
+        }
+    }
+
+    public void setFirstPoint(int x, int y, int z) {
+        x0 = x;
+        y0 = y;
+        z0 = z;
+        p1set = true;
+        validate();
+    }
+
+    public void setSecondPoint(int x, int y, int z) {
+        x1 = x;
+        y1 = y;
+        z1 = z;
+        p2set = true;
+        validate();
+    }
+
+    private void validate() {
+        if (x0 > x1) {
+            int tmp = x0;
+            x0 = x1;
+            x1 = tmp;
+        }
+        if (y0 > y1) {
+            int tmp = y0;
+            y0 = y1;
+            y1 = tmp;
+        }
+        if (z0 > z1) {
+            int tmp = z0;
+            z0 = z1;
+            z1 = tmp;
         }
     }
 
@@ -95,8 +106,12 @@ public class AnimBuilder {
         yml.save(folder + "\\" + getName() + ".yml");
     }
 
-    public State getState() {
-        return state;
+    public boolean isFirstPointSet() {
+        return p1set;
+    }
+
+    public boolean isSecondPointSet() {
+        return p2set;
     }
 
     public int getX0() {

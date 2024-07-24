@@ -23,7 +23,7 @@ public class SavePhaseCommand implements AnimCommand {
             player.sendMessage("....");
             return true;
         }
-        if (builder.getState() != AnimBuilder.State.P2_SET) {
+        if (!builder.isFirstPointSet() || !builder.isSecondPointSet()) {
             player.sendMessage("set bounds first");
             return true;
         }
