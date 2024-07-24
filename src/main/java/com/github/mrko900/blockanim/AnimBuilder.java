@@ -48,7 +48,9 @@ public class AnimBuilder {
         y0 = y;
         z0 = z;
         p1set = true;
-        validate();
+        if (p2set) {
+            validate();
+        }
     }
 
     public void setSecondPoint(int x, int y, int z) {
@@ -56,7 +58,9 @@ public class AnimBuilder {
         y1 = y;
         z1 = z;
         p2set = true;
-        validate();
+        if (p1set) {
+            validate();
+        }
     }
 
     private void validate() {
@@ -79,7 +83,6 @@ public class AnimBuilder {
 
     public void saveAnim(String folder) throws IOException {
         YamlConfiguration yml = new YamlConfiguration();
-        yml.createSection("phases");
         yml.set("x0", x0);
         yml.set("x1", x1);
         yml.set("y0", y0);
@@ -87,21 +90,24 @@ public class AnimBuilder {
         yml.set("z0", z0);
         yml.set("z1", z1);
         yml.set("world", world.getUID().toString());
-        int i = 0;
-        for (AnimPhase phase : phases) {
+        yml.createSection("phases");
+        for (int i = 0; i < phases.size(); ++i) {
+            AnimPhase phase = phases.get(i);
+            AnimPhase prevPhase = phases.get((i - 1 + phases.size()) % phases.size());
             String s = "phases." + i;
             yml.createSection(s);
             yml.set(s + ".duration", phase.getDuration());
-            List<String> blocks = new ArrayList<>();
+            yml.createSection(s + ".blocks");
             for (int x = x0; x <= x1; ++x) {
                 for (int y = y0; y <= y1; ++y) {
                     for (int z = z0; z <= z1; ++z) {
-                        blocks.add(phase.getBlockData(x - x0, y - y0, z - z0));
+                        if (!phase.getBlockData(x - x0, y - y0, z - z0)
+                                .equals(prevPhase.getBlockData(x - x0, y - y0, z - z0))) {
+                            yml.set(s + ".blocks." + x + "," + y + "," + z, phase.getBlockData(x - x0, y - y0, z - z0));
+                        }
                     }
                 }
             }
-            yml.set(s + ".blocks", blocks);
-            ++i;
         }
         yml.save(folder + "\\" + getName() + ".yml");
     }
