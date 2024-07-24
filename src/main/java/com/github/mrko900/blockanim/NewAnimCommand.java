@@ -5,7 +5,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class NewAnimCommand implements CommandExecutor {
+public class NewAnimCommand implements AnimCommand {
     private AnimBuilderManager listener;
 
     public NewAnimCommand(AnimBuilderManager listener) {
@@ -13,7 +13,7 @@ public class NewAnimCommand implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean execute(CommandSender sender, String[] args) {
         if (!(sender instanceof Player)) {
             return false;
         }

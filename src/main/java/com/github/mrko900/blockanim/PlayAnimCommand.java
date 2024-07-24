@@ -7,7 +7,7 @@ import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 
-public class PlayAnimCommand implements CommandExecutor {
+public class PlayAnimCommand implements AnimCommand {
     private Plugin plugin;
 
     public PlayAnimCommand(Plugin plugin) {
@@ -15,7 +15,7 @@ public class PlayAnimCommand implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean execute(CommandSender sender, String[] args) {
         if (args.length != 1) {
             return false;
         }

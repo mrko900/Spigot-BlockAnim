@@ -3,15 +3,20 @@ package com.github.mrko900.blockanim;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class BlockAnimPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         super.onEnable();
         AnimBuilderManager animBuilderManager = new AnimBuilderManager();
         Bukkit.getPluginManager().registerEvents(animBuilderManager, this);
-        getCommand("newanim").setExecutor(new NewAnimCommand(animBuilderManager));
-        getCommand("saveanim").setExecutor(new SaveAnimCommand(animBuilderManager, getDataFolder().getPath()));
-        getCommand("savephase").setExecutor(new SavePhaseCommand(animBuilderManager));
-        getCommand("playanim").setExecutor(new PlayAnimCommand(this));
+        Map<String, AnimCommand> executors = new HashMap<>();
+        executors.put("new", new NewAnimCommand(animBuilderManager));
+        executors.put("phase", new SavePhaseCommand(animBuilderManager));
+        executors.put("save", new SaveAnimCommand(animBuilderManager, getDataFolder().getPath()));
+        executors.put("play", new PlayAnimCommand(this));
+        getCommand("anim").setExecutor(new AnimCommandExecutor(executors));
     }
 }

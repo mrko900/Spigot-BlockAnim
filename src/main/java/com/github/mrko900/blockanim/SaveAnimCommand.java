@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 
 import java.io.IOException;
 
-public class SaveAnimCommand implements CommandExecutor {
+public class SaveAnimCommand implements AnimCommand {
     private AnimBuilderManager animBuilderManager;
     private String pluginFolder;
 
@@ -17,7 +17,7 @@ public class SaveAnimCommand implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean execute(CommandSender sender, String[] args) {
         if (!(sender instanceof Player)) {
             sender.sendMessage("you are not a player");
             return true;
