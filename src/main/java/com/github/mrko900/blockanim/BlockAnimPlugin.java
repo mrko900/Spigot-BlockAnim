@@ -2,21 +2,17 @@ package com.github.mrko900.blockanim;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class BlockAnimPlugin extends JavaPlugin {
     private FileConfiguration config;
+    private AnimManager animManager;
 
     @Override
     public void onEnable() {
@@ -31,7 +27,7 @@ public class BlockAnimPlugin extends JavaPlugin {
         AnimBuilderManager animBuilderManager = new AnimBuilderManager();
         Bukkit.getPluginManager().registerEvents(animBuilderManager, this);
         Map<String, AnimCommand> executors = new HashMap<>();
-        AnimManager animManager = new AnimManager(this);
+        animManager = new AnimManager(this);
         executors.put("new", new AnimNewCommand(animBuilderManager));
         executors.put("phase", new AnimSavePhaseCommand(animBuilderManager));
         executors.put("save", new AnimSaveCommand(animBuilderManager, getDataFolder().getPath()));
@@ -39,7 +35,10 @@ public class BlockAnimPlugin extends JavaPlugin {
         executors.put("stop", new AnimStopCommand(animManager));
         executors.put("pos1", new AnimPosCommand(animBuilderManager, true));
         executors.put("pos2", new AnimPosCommand(animBuilderManager, false));
+        executors.put("autoplay", new AnimAutoplayCommand(this));
         getCommand("anim").setExecutor(new AnimCommandExecutor(executors));
+
+        autoPlayAnims();
     }
 
     private void loadConfig() throws IOException {
@@ -53,5 +52,13 @@ public class BlockAnimPlugin extends JavaPlugin {
         getDataFolder().mkdirs();
         File file = new File(getDataFolder(), "config.yml");
         Files.copy(getResource("config.yml"), file.toPath());
+    }
+
+    private void autoPlayAnims() {
+        for (String name : config.getStringList("autoplay")) {
+            if (animManager.loadAnim(name)) {
+                animManager.playAnim(name);
+            }
+        }
     }
 }
