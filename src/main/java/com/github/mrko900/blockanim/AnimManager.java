@@ -32,7 +32,8 @@ public class AnimManager {
         if (isAnimLoaded(name)) {
             return true;
         }
-        File file = new File(plugin.getDataFolder().getPath() + "\\" + name + ".yml");
+        File file = new File(plugin.getDataFolder().getPath() + File.separator + "anims"
+                             + File.separator + name + ".yml");
         if (!file.exists()) {
             return false;
         }

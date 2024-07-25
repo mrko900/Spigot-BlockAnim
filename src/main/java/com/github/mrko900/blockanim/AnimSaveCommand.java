@@ -5,6 +5,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.io.File;
 import java.io.IOException;
 
 public class AnimSaveCommand implements AnimCommand {
@@ -34,7 +35,7 @@ public class AnimSaveCommand implements AnimCommand {
         builder.setName(args[0]);
         animBuilderManager.removePlayer(player);
         try {
-            builder.saveAnim(pluginFolder);
+            builder.saveAnim(pluginFolder + File.separator + "anims");
         } catch (IOException e) {
             sender.sendMessage("io exception");
             return true;
