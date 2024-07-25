@@ -5,14 +5,17 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 public class BlockAnimPlugin extends JavaPlugin {
     private FileConfiguration config;
     private AnimManager animManager;
+    private Properties messages;
 
     @Override
     public void onEnable() {
@@ -20,6 +23,7 @@ public class BlockAnimPlugin extends JavaPlugin {
 
         try {
             loadConfig();
+            loadMessages();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -59,6 +63,24 @@ public class BlockAnimPlugin extends JavaPlugin {
         for (String name : config.getStringList("autoplay")) {
             if (animManager.loadAnim(name)) {
                 animManager.playAnim(name);
+            }
+        }
+    }
+
+    private void loadMessages() throws IOException {
+        File file = new File(getDataFolder(), "messages.properties");
+        if (!file.exists()) {
+            file.getParentFile().mkdirs();
+            Files.copy(getResource("messages.properties"), file.toPath());
+        }
+        messages = new Properties();
+        messages.load(new FileReader(file));
+
+        Properties sample = new Properties();
+        sample.load(getResource("messages.properties"));
+        for (Object key : sample.keySet()) {
+            if (!messages.containsKey(key)) {
+                throw new RuntimeException("todo");
             }
         }
     }
