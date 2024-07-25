@@ -3,10 +3,10 @@ package com.github.mrko900.blockanim;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 
-public class PlayAnimCommand implements AnimCommand {
+public class AnimPlayCommand implements AnimCommand {
     private AnimManager animManager;
 
-    public PlayAnimCommand(AnimManager animManager) {
+    public AnimPlayCommand(AnimManager animManager) {
         this.animManager = animManager;
     }
 

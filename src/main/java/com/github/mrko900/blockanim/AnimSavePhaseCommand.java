@@ -5,10 +5,10 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class SavePhaseCommand implements AnimCommand {
+public class AnimSavePhaseCommand implements AnimCommand {
     AnimBuilderManager manager;
 
-    public SavePhaseCommand(AnimBuilderManager manager) {
+    public AnimSavePhaseCommand(AnimBuilderManager manager) {
         this.manager = manager;
     }
 

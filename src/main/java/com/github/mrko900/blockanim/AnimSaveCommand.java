@@ -7,11 +7,11 @@ import org.bukkit.entity.Player;
 
 import java.io.IOException;
 
-public class SaveAnimCommand implements AnimCommand {
+public class AnimSaveCommand implements AnimCommand {
     private AnimBuilderManager animBuilderManager;
     private String pluginFolder;
 
-    public SaveAnimCommand(AnimBuilderManager listener, String pluginFolder) {
+    public AnimSaveCommand(AnimBuilderManager listener, String pluginFolder) {
         this.animBuilderManager = listener;
         this.pluginFolder = pluginFolder;
     }
