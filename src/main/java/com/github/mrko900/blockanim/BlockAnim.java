@@ -16,6 +16,7 @@ public class BlockAnim {
     private List<Phase> phases = new ArrayList<>();
     private World world;
     private Plugin plugin;
+    private boolean running;
 
     public class Phase {
         int duration;
@@ -33,13 +34,28 @@ public class BlockAnim {
 
         @Override
         public void run() {
+            if (!running) {
+                return;
+            }
             new Task((i + 1) % phases.size()).runTaskLater(plugin, phases.get(i).duration);
             setPhase(i);
         }
     }
 
     public void start() {
+        if (running) {
+            throw new IllegalStateException("already running");
+        }
+        running = true;
         new Task(0).run();
+    }
+
+    public void stop() {
+        if (!running) {
+            throw new IllegalStateException("not running");
+        }
+        setPhase(0);
+        running = false;
     }
 
     public void setPhase(int i) {
@@ -62,9 +78,6 @@ public class BlockAnim {
         anim.z0 = config.getInt("z0");
         anim.z1 = config.getInt("z1");
         anim.plugin = plugin;
-//        int w = anim.x1 - anim.x0 + 1;
-//        int h = anim.y1 - anim.y0 + 1;
-//        int d = anim.z1 - anim.z0 + 1;
         ConfigurationSection phases = config.getConfigurationSection("phases");
         for (String key : phases.getKeys(false)) {
             Phase phase = anim.new Phase();
@@ -77,9 +90,6 @@ public class BlockAnim {
                 int x = Integer.parseInt(arr[0]);
                 int y = Integer.parseInt(arr[1]);
                 int z = Integer.parseInt(arr[2]);
-//                int x = i / (h * d);
-//                int y = i % (h * d) / d;
-//                int z = i % (h * d) % d;
                 String blockData = blocksSection.getString(xyz);
                 phase.blockData.put(new Vector3i(x, y, z), blockData);
                 ++i;
@@ -87,5 +97,9 @@ public class BlockAnim {
             anim.phases.add(phase);
         }
         return anim;
+    }
+
+    public boolean isRunning() {
+        return running;
     }
 }
