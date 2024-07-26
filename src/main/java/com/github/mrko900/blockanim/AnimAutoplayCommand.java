@@ -10,10 +10,12 @@ import java.util.List;
 public class AnimAutoplayCommand implements AnimCommand {
     private Plugin plugin;
     private MessageManager messageManager;
+    private AnimManager animManager;
 
-    public AnimAutoplayCommand(Plugin plugin, MessageManager messageManager) {
+    public AnimAutoplayCommand(Plugin plugin, MessageManager messageManager, AnimManager animManager) {
         this.plugin = plugin;
         this.messageManager = messageManager;
+        this.animManager = animManager;
     }
 
     @Override
@@ -24,7 +26,7 @@ public class AnimAutoplayCommand implements AnimCommand {
             return true;
         }
         String name = args[0];
-        if (!new File(plugin.getDataFolder().getPath() + File.separator + "anims" + File.separator + name).exists()) {
+        if (!animManager.animExists(name)) {
             sender.sendMessage(messageManager.get("anim.doesntExist0") + name
                                + messageManager.get("anim.doesntExist1"));
             return true;

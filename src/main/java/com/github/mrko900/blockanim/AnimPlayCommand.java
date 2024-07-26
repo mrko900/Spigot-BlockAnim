@@ -19,6 +19,11 @@ public class AnimPlayCommand implements AnimCommand {
             return true;
         }
         String name = args[0];
+        if (animManager.isAnimPlaying(name)) {
+            sender.sendMessage(messageManager.get("anim.alreadyPlaying0") + name
+                               + messageManager.get("anim.alreadyPlaying1"));
+            return true;
+        }
         if (!animManager.loadAnim(name)) {
             sender.sendMessage(messageManager.get("anim.doesntExist0") + name
                                + messageManager.get("anim.doesntExist1"));
