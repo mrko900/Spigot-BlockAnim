@@ -42,6 +42,7 @@ public class BlockAnimPlugin extends JavaPlugin {
         executors.put("pos2", new AnimPosCommand(animBuilderManager, messageManager, false));
         executors.put("autoplay", new AnimAutoplayCommand(this, animManager, messageManager));
         executors.put("delete", new AnimDeleteCommand(animManager, messageManager));
+        executors.put("list", new AnimListCommand(animManager, messageManager));
         executors.put("help", new AnimHelpCommand(this));
         getCommand("anim").setExecutor(new AnimCommandExecutor(executors));
 

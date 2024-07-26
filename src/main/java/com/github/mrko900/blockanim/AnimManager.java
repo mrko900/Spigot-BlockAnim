@@ -6,6 +6,7 @@ import org.bukkit.plugin.Plugin;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -79,5 +80,20 @@ public class AnimManager {
         }
         config.set("autoplay", list);
         plugin.saveConfig();
+    }
+
+    public List<String> listAnimations() {
+        List<String> anims = new ArrayList<>();
+        File[] lst = new File(plugin.getDataFolder().getPath() + File.separator + "anims").listFiles();
+        if (lst == null) {
+            return anims;
+        }
+        for (File file : lst) {
+            String name = file.getName();
+            if (name.length() > 3 && name.substring(name.length() - 4).equals(".yml")) {
+                anims.add(name.substring(0, name.length() - 4));
+            }
+        }
+        return anims;
     }
 }
