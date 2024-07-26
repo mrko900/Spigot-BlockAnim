@@ -32,6 +32,7 @@ public class AnimDeleteCommand implements AnimCommand {
         if (animManager.isAnimLoaded(name)) {
             animManager.unloadAnim(name);
         }
+        animManager.setAutoplay(name, false);
         try {
             animManager.deleteAnim(name);
         } catch (IOException e) {

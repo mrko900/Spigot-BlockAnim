@@ -1,11 +1,13 @@
 package com.github.mrko900.blockanim;
 
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class AnimManager {
@@ -65,5 +67,17 @@ public class AnimManager {
 
     public boolean animExists(String name) {
         return getAnimFile(name).exists();
+    }
+
+    public void setAutoplay(String name, boolean enabled) {
+        FileConfiguration config = plugin.getConfig();
+        List<String> list = config.getStringList("autoplay");
+        if (enabled) {
+            list.add(name);
+        } else {
+            list.remove(name);
+        }
+        config.set("autoplay", list);
+        plugin.saveConfig();
     }
 }

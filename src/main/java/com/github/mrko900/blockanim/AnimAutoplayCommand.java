@@ -9,13 +9,13 @@ import java.util.List;
 
 public class AnimAutoplayCommand implements AnimCommand {
     private Plugin plugin;
-    private MessageManager messageManager;
     private AnimManager animManager;
+    private MessageManager messageManager;
 
-    public AnimAutoplayCommand(Plugin plugin, MessageManager messageManager, AnimManager animManager) {
+    public AnimAutoplayCommand(Plugin plugin, AnimManager animManager, MessageManager messageManager) {
         this.plugin = plugin;
-        this.messageManager = messageManager;
         this.animManager = animManager;
+        this.messageManager = messageManager;
     }
 
     @Override
@@ -34,14 +34,10 @@ public class AnimAutoplayCommand implements AnimCommand {
         FileConfiguration config = plugin.getConfig();
         String s;
         if (config.getStringList("autoplay").contains(name)) {
-            List<String> list = config.getStringList("autoplay");
-            list.remove(name);
-            config.set("autoplay", list);
+            animManager.setAutoplay(name, false);
             s = messageManager.get("disabled");
         } else {
-            List<String> list = config.getStringList("autoplay");
-            list.add(name);
-            config.set("autoplay", list);
+            animManager.setAutoplay(name, true);
             s = messageManager.get("enabled");
         }
         sender.sendMessage(messageManager.get("anim.autoplay0") + s
