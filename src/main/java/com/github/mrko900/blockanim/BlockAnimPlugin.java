@@ -35,7 +35,7 @@ public class BlockAnimPlugin extends JavaPlugin {
         animManager = new AnimManager(this);
         executors.put("new", new AnimNewCommand(animBuilderManager, messageManager));
         executors.put("phase", new AnimSavePhaseCommand(animBuilderManager, messageManager));
-        executors.put("save", new AnimSaveCommand(animBuilderManager, getDataFolder().getPath()));
+        executors.put("save", new AnimSaveCommand(animBuilderManager, getDataFolder().getPath(), messageManager));
         executors.put("play", new AnimPlayCommand(animManager));
         executors.put("stop", new AnimStopCommand(animManager));
         executors.put("pos1", new AnimPosCommand(animBuilderManager, true));

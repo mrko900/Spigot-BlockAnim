@@ -1,7 +1,5 @@
 package com.github.mrko900.blockanim;
 
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -11,10 +9,12 @@ import java.io.IOException;
 public class AnimSaveCommand implements AnimCommand {
     private AnimBuilderManager animBuilderManager;
     private String pluginFolder;
+    private MessageManager messageManager;
 
-    public AnimSaveCommand(AnimBuilderManager listener, String pluginFolder) {
+    public AnimSaveCommand(AnimBuilderManager listener, String pluginFolder, MessageManager messageManager) {
         this.animBuilderManager = listener;
         this.pluginFolder = pluginFolder;
+        this.messageManager = messageManager;
     }
 
     @Override
@@ -40,7 +40,7 @@ public class AnimSaveCommand implements AnimCommand {
             sender.sendMessage("io exception");
             return true;
         }
-        player.sendMessage("anim has been saved.");
+        player.sendMessage(messageManager.get("anim.save0") + args[0] + messageManager.get("anim.save1"));
         return true;
     }
 }
