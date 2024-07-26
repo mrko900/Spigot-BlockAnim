@@ -6,11 +6,15 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.logging.Level;
 
 public class BlockAnimPlugin extends JavaPlugin {
     private FileConfiguration config;
@@ -82,13 +86,21 @@ public class BlockAnimPlugin extends JavaPlugin {
         }
 
         Properties sample = new Properties();
-        sample.load(getResource("messages.properties"));
+        sample.load(new InputStreamReader(getResource("messages.properties")));  // InputStreamReader for utf-8
+        boolean missingSome = false;
         for (Object key : sample.keySet()) {
             if (!messages.containsKey(key)) {
-                throw new RuntimeException("todo");
+                messages.setProperty(key.toString(), sample.getProperty(key.toString()));
+                missingSome = true;
             }
         }
-
         messageManager = new MessageManager(messages);
+        if (missingSome) {
+            getLogger().log(Level.WARNING, file.getPath() + " is missing some keys. "
+                                           + "The default values will be used.");
+            try (FileWriter fw = new FileWriter(file)) {
+                messages.store(fw, null);
+            }
+        }
     }
 }

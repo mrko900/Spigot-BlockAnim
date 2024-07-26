@@ -1,7 +1,6 @@
 package com.github.mrko900.blockanim;
 
 import org.bukkit.command.CommandSender;
-import org.bukkit.plugin.Plugin;
 
 public class AnimHelpCommand implements AnimCommand {
     private MessageManager messageManager;
