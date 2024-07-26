@@ -4,7 +4,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,6 +11,11 @@ import java.util.UUID;
 
 public class AnimBuilderManager implements Listener {
     private Map<UUID, AnimBuilder> animMap = new HashMap<>();
+    private MessageManager messageManager;
+
+    public AnimBuilderManager(MessageManager messageManager) {
+        this.messageManager = messageManager;
+    }
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
@@ -20,12 +24,14 @@ public class AnimBuilderManager implements Listener {
             return;
         }
         event.setCancelled(true);
+        String xyz = event.getBlock().getX() + " " + event.getBlock().getY() + " " + event.getBlock().getZ();
         if (!anim.isFirstPointSet()) {
-            event.getPlayer().sendMessage("first point set");
+            event.getPlayer().sendMessage(messageManager.get("anim.p1set") + xyz);
         } else {
-            event.getPlayer().sendMessage("second point set");
+            event.getPlayer().sendMessage(messageManager.get("anim.p2set") + xyz);
         }
         anim.addPoint(event.getBlock().getX(), event.getBlock().getY(), event.getBlock().getZ());
+        checkBothSet(event.getPlayer(), anim);
     }
 
     public void setFirstPoint(Player player, int x, int y, int z) {
@@ -33,7 +39,10 @@ public class AnimBuilderManager implements Listener {
         if (anim == null) {
             return;
         }
+        String xyz = x + " " + y + " " + z;
         anim.setFirstPoint(x, y, z);
+        player.sendMessage(messageManager.get("anim.p1set") + xyz);
+        checkBothSet(player, anim);
     }
 
     public void setSecondPoint(Player player, int x, int y, int z) {
@@ -41,7 +50,16 @@ public class AnimBuilderManager implements Listener {
         if (anim == null) {
             return;
         }
+        String xyz = x + " " + y + " " + z;
         anim.setSecondPoint(x, y, z);
+        player.sendMessage(messageManager.get("anim.p2set") + xyz);
+        checkBothSet(player, anim);
+    }
+
+    private void checkBothSet(Player player, AnimBuilder anim) {
+        if (anim.isFirstPointSet() && anim.isSecondPointSet()) {
+            player.sendMessage(messageManager.get("anim.bothPointsSet"));
+        }
     }
 
     public void addPlayer(Player player) {

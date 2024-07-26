@@ -7,7 +7,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,7 +29,7 @@ public class BlockAnimPlugin extends JavaPlugin {
             throw new RuntimeException(e);
         }
 
-        AnimBuilderManager animBuilderManager = new AnimBuilderManager();
+        AnimBuilderManager animBuilderManager = new AnimBuilderManager(messageManager);
         Bukkit.getPluginManager().registerEvents(animBuilderManager, this);
         Map<String, AnimCommand> executors = new HashMap<>();
         animManager = new AnimManager(this);

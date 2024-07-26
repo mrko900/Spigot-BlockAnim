@@ -18,4 +18,8 @@ public class MessageManager {
         }
         return s.split("\n");
     }
+
+    public String get(String msg) {
+        return messages.getProperty(msg);
+    }
 }
