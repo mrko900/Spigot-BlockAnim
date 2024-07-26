@@ -36,7 +36,7 @@ public class AnimSavePhaseCommand implements AnimCommand {
         try {
             val = Integer.parseInt(args[0]);
         } catch (NumberFormatException e) {
-            player.sendMessage("invalid number format");
+            player.sendMessage(messageManager.get("invalidNumberFormat"));
             return true;
         }
         AnimPhase phase = builder.getCurrentPhase();

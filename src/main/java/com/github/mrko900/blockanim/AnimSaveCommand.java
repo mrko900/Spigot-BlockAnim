@@ -20,7 +20,7 @@ public class AnimSaveCommand implements AnimCommand {
     @Override
     public boolean execute(CommandSender sender, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage("you are not a player");
+            sender.sendMessage("Only players can use this command.");
             return true;
         }
         Player player = (Player) sender;
@@ -31,7 +31,11 @@ public class AnimSaveCommand implements AnimCommand {
         }
         AnimBuilder builder = animBuilderManager.getAnimBuilder(player);
         if (builder == null) {
-            sender.sendMessage("...");
+            sender.sendMessage(messageManager.get("anim.notInBuilderMode"));
+            return true;
+        }
+        if (builder.getPhaseCount() < 2) {
+            sender.sendMessage(messageManager.get("anim.notEnoughPhases"));
             return true;
         }
         builder.setName(args[0]);
