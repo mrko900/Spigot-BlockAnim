@@ -25,7 +25,9 @@ public class AnimSaveCommand implements AnimCommand {
         }
         Player player = (Player) sender;
         if (args.length != 1) {
-            return false;
+            sender.sendMessage(messageManager.get("invalidCommand") + ' '
+                               + messageManager.get("anim.cmdSaveUsage"));
+            return true;
         }
         AnimBuilder builder = animBuilderManager.getAnimBuilder(player);
         if (builder == null) {

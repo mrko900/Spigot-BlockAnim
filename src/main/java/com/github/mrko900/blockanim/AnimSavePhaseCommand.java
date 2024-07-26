@@ -28,7 +28,9 @@ public class AnimSavePhaseCommand implements AnimCommand {
             return true;
         }
         if (args.length != 1) {
-            return false;
+            sender.sendMessage(messageManager.get("invalidCommand") + ' '
+                               + messageManager.get("anim.cmdPhaseUsage"));
+            return true;
         }
         int val;
         try {

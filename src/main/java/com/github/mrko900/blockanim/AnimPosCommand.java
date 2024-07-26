@@ -5,10 +5,12 @@ import org.bukkit.entity.Player;
 
 public class AnimPosCommand implements AnimCommand {
     private AnimBuilderManager manager;
+    private MessageManager messageManager;
     private boolean first;
 
-    public AnimPosCommand(AnimBuilderManager manager, boolean first) {
+    public AnimPosCommand(AnimBuilderManager manager, MessageManager messageManager, boolean first) {
         this.manager = manager;
+        this.messageManager = messageManager;
         this.first = first;
     }
 
@@ -20,7 +22,9 @@ public class AnimPosCommand implements AnimCommand {
         }
         Player player = (Player) sender;
         if (args.length != 3) {
-            return false;
+            sender.sendMessage(messageManager.get("invalidCommand") + ' '
+                               + messageManager.get(first ? "anim.cmdPos1Usage" : "anim.cmdPos2Usage"));
+            return true;
         }
         int x, y, z;
         try {

@@ -19,7 +19,9 @@ public class AnimAutoplayCommand implements AnimCommand {
     @Override
     public boolean execute(CommandSender sender, String[] args) {
         if (args.length != 1) {
-            return false;
+            sender.sendMessage(messageManager.get("invalidCommand") + ' '
+                               + messageManager.get("anim.cmdAutoplayUsage"));
+            return true;
         }
         String name = args[0];
         if (!new File(plugin.getDataFolder().getPath() + File.separator + "anims" + File.separator + name).exists()) {

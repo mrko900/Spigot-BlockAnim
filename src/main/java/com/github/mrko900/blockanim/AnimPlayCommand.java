@@ -14,7 +14,9 @@ public class AnimPlayCommand implements AnimCommand {
     @Override
     public boolean execute(CommandSender sender, String[] args) {
         if (args.length != 1) {
-            return false;
+            sender.sendMessage(messageManager.get("invalidCommand") + ' '
+                               + messageManager.get("anim.cmdPlayUsage"));
+            return true;
         }
         String name = args[0];
         if (!animManager.loadAnim(name)) {
