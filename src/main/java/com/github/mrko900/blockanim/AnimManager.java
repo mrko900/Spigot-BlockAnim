@@ -28,12 +28,16 @@ public class AnimManager {
         animMap.get(name).stop();
     }
 
+    private File getAnimFile(String name) {
+        return new File(plugin.getDataFolder().getPath() + File.separator + "anims"
+                        + File.separator + name + ".yml");
+    }
+
     public boolean loadAnim(String name) {
         if (isAnimLoaded(name)) {
             return true;
         }
-        File file = new File(plugin.getDataFolder().getPath() + File.separator + "anims"
-                             + File.separator + name + ".yml");
+        File file = getAnimFile(name);
         if (!file.exists()) {
             return false;
         }
@@ -51,5 +55,9 @@ public class AnimManager {
 
     public boolean isAnimPlaying(String name) {
         return isAnimLoaded(name) && animMap.get(name).isRunning();
+    }
+
+    public boolean animExists(String name) {
+        return getAnimFile(name).exists();
     }
 }

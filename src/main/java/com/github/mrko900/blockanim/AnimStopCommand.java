@@ -17,6 +17,11 @@ public class AnimStopCommand implements AnimCommand {
             return false;
         }
         String name = args[0];
+        if (!animManager.animExists(name)) {
+            sender.sendMessage(messageManager.get("anim.doesntExist0") + name
+                               + messageManager.get("anim.doesntExist1"));
+            return true;
+        }
         if (!animManager.isAnimPlaying(name)) {
             sender.sendMessage("anim not playing.");
             return true;

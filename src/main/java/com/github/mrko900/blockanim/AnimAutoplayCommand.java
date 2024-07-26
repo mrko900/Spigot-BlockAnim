@@ -4,6 +4,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 
+import java.io.File;
 import java.util.List;
 
 public class AnimAutoplayCommand implements AnimCommand {
@@ -21,6 +22,11 @@ public class AnimAutoplayCommand implements AnimCommand {
             return false;
         }
         String name = args[0];
+        if (!new File(plugin.getDataFolder().getPath() + File.separator + "anims" + File.separator + name).exists()) {
+            sender.sendMessage(messageManager.get("anim.doesntExist0") + name
+                               + messageManager.get("anim.doesntExist1"));
+            return true;
+        }
         FileConfiguration config = plugin.getConfig();
         String s;
         if (config.getStringList("autoplay").contains(name)) {

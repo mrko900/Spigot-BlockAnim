@@ -18,7 +18,8 @@ public class AnimPlayCommand implements AnimCommand {
         }
         String name = args[0];
         if (!animManager.loadAnim(name)) {
-            sender.sendMessage("no such anim.");
+            sender.sendMessage(messageManager.get("anim.doesntExist0") + name
+                               + messageManager.get("anim.doesntExist1"));
             return true;
         }
         sender.sendMessage(messageManager.get("anim.play0") + name + messageManager.get("anim.play1"));
