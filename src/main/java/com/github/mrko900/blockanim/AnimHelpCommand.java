@@ -4,15 +4,15 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 
 public class AnimHelpCommand implements AnimCommand {
-    private Plugin plugin;
+    private MessageManager messageManager;
 
-    public AnimHelpCommand(Plugin plugin) {
-        this.plugin = plugin;
+    public AnimHelpCommand(MessageManager messageManager) {
+        this.messageManager = messageManager;
     }
 
     @Override
     public boolean execute(CommandSender sender, String[] args) {
-        sender.sendMessage("tipo help");
+        sender.sendMessage(messageManager.get("anim.help"));
         return true;
     }
 }
