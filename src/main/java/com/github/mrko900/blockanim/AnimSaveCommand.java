@@ -39,7 +39,8 @@ public class AnimSaveCommand implements AnimCommand {
         try {
             builder.saveAnim(pluginFolder + File.separator + "anims");
         } catch (IOException e) {
-            sender.sendMessage("io exception");
+            sender.sendMessage("IO exception has occurred");
+            e.printStackTrace();
             return true;
         }
         player.sendMessage(messageManager.get("anim.save0") + args[0] + messageManager.get("anim.save1"));

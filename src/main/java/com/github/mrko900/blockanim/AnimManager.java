@@ -3,6 +3,8 @@ package com.github.mrko900.blockanim;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,6 +28,10 @@ public class AnimManager {
             throw new IllegalStateException("not playing");
         }
         animMap.get(name).stop();
+    }
+
+    public void deleteAnim(String name) throws IOException {
+        Files.delete(getAnimFile(name).toPath());
     }
 
     private File getAnimFile(String name) {
