@@ -8,9 +8,11 @@ import java.util.List;
 
 public class AnimAutoplayCommand implements AnimCommand {
     private Plugin plugin;
+    private MessageManager messageManager;
 
-    public AnimAutoplayCommand(Plugin plugin) {
+    public AnimAutoplayCommand(Plugin plugin, MessageManager messageManager) {
         this.plugin = plugin;
+        this.messageManager = messageManager;
     }
 
     @Override
@@ -20,17 +22,21 @@ public class AnimAutoplayCommand implements AnimCommand {
         }
         String name = args[0];
         FileConfiguration config = plugin.getConfig();
+        String s;
         if (config.getStringList("autoplay").contains(name)) {
             List<String> list = config.getStringList("autoplay");
             list.remove(name);
             config.set("autoplay", list);
-            sender.sendMessage("autoplay disabled");
+            s = messageManager.get("disabled");
         } else {
             List<String> list = config.getStringList("autoplay");
             list.add(name);
             config.set("autoplay", list);
-            sender.sendMessage("autoplay enabled");
+            s = messageManager.get("enabled");
         }
+        sender.sendMessage(messageManager.get("anim.autoplay0") + s
+                           + messageManager.get("anim.autoplay1") + name
+                           + messageManager.get("anim.autoplay2"));
         plugin.saveConfig();
         return true;
     }
