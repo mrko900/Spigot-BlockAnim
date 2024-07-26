@@ -7,6 +7,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,6 +17,7 @@ public class BlockAnimPlugin extends JavaPlugin {
     private FileConfiguration config;
     private AnimManager animManager;
     private Properties messages;
+    private MessageManager messageManager;
 
     @Override
     public void onEnable() {
@@ -32,7 +34,7 @@ public class BlockAnimPlugin extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(animBuilderManager, this);
         Map<String, AnimCommand> executors = new HashMap<>();
         animManager = new AnimManager(this);
-        executors.put("new", new AnimNewCommand(animBuilderManager));
+        executors.put("new", new AnimNewCommand(animBuilderManager, messageManager));
         executors.put("phase", new AnimSavePhaseCommand(animBuilderManager));
         executors.put("save", new AnimSaveCommand(animBuilderManager, getDataFolder().getPath()));
         executors.put("play", new AnimPlayCommand(animManager));
@@ -74,7 +76,9 @@ public class BlockAnimPlugin extends JavaPlugin {
             Files.copy(getResource("messages.properties"), file.toPath());
         }
         messages = new Properties();
-        messages.load(new FileReader(file));
+        try (FileReader fr = new FileReader(file)) {
+            messages.load(fr);
+        }
 
         Properties sample = new Properties();
         sample.load(getResource("messages.properties"));
@@ -83,5 +87,7 @@ public class BlockAnimPlugin extends JavaPlugin {
                 throw new RuntimeException("todo");
             }
         }
+
+        messageManager = new MessageManager(messages);
     }
 }

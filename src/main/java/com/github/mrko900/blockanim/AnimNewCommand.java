@@ -1,15 +1,15 @@
 package com.github.mrko900.blockanim;
 
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class AnimNewCommand implements AnimCommand {
     private AnimBuilderManager listener;
+    private MessageManager messageManager;
 
-    public AnimNewCommand(AnimBuilderManager listener) {
+    public AnimNewCommand(AnimBuilderManager listener, MessageManager messageManager) {
         this.listener = listener;
+        this.messageManager = messageManager;
     }
 
     @Override
@@ -18,7 +18,7 @@ public class AnimNewCommand implements AnimCommand {
             return false;
         }
         Player player = (Player) sender;
-        player.sendMessage("new anim");
+        player.sendMessage(messageManager.getLines("anim.new"));
         listener.addPlayer(player);
         return true;
     }
