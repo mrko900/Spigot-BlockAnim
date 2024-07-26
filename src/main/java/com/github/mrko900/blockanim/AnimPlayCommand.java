@@ -1,13 +1,14 @@
 package com.github.mrko900.blockanim;
 
 import org.bukkit.command.CommandSender;
-import org.bukkit.plugin.Plugin;
 
 public class AnimPlayCommand implements AnimCommand {
     private AnimManager animManager;
+    private MessageManager messageManager;
 
-    public AnimPlayCommand(AnimManager animManager) {
+    public AnimPlayCommand(AnimManager animManager, MessageManager messageManager) {
         this.animManager = animManager;
+        this.messageManager = messageManager;
     }
 
     @Override
@@ -20,6 +21,7 @@ public class AnimPlayCommand implements AnimCommand {
             sender.sendMessage("no such anim.");
             return true;
         }
+        sender.sendMessage(messageManager.get("anim.play0") + name + messageManager.get("anim.play1"));
         animManager.playAnim(name);
         return true;
     }
