@@ -23,7 +23,8 @@ public class AnimStopCommand implements AnimCommand {
             return true;
         }
         if (!animManager.isAnimPlaying(name)) {
-            sender.sendMessage("anim not playing.");
+            sender.sendMessage(messageManager.get("anim.notPlaying0") + name
+                               + messageManager.get("anim.notPlaying1"));
             return true;
         }
         sender.sendMessage(messageManager.get("anim.stop0") + name + messageManager.get("anim.stop1"));
