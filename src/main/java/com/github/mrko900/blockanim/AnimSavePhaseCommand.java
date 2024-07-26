@@ -20,11 +20,11 @@ public class AnimSavePhaseCommand implements AnimCommand {
         Player player = (Player) sender;
         AnimBuilder builder = manager.getAnimBuilder(player);
         if (builder == null) {
-            player.sendMessage("....");
+            player.sendMessage(messageManager.get("anim.notInBuilderMode"));
             return true;
         }
         if (!builder.isFirstPointSet() || !builder.isSecondPointSet()) {
-            player.sendMessage("set bounds first");
+            player.sendMessage(messageManager.get("anim.regionNotMarked"));
             return true;
         }
         if (args.length != 1) {
