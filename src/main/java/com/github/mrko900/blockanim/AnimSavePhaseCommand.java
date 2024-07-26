@@ -24,7 +24,7 @@ public class AnimSavePhaseCommand implements AnimCommand {
             return true;
         }
         if (!builder.isFirstPointSet() || !builder.isSecondPointSet()) {
-            player.sendMessage(messageManager.get("anim.regionNotMarked"));
+            player.sendMessage(messageManager.get("anim.regionNotSpecified"));
             return true;
         }
         if (args.length != 1) {

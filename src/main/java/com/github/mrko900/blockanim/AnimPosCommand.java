@@ -17,7 +17,7 @@ public class AnimPosCommand implements AnimCommand {
     @Override
     public boolean execute(CommandSender sender, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage("0-0");
+            sender.sendMessage("Only players can use this command.");
             return true;
         }
         Player player = (Player) sender;
@@ -32,7 +32,16 @@ public class AnimPosCommand implements AnimCommand {
             y = Integer.parseInt(args[1]);
             z = Integer.parseInt(args[2]);
         } catch (NumberFormatException e) {
-            player.sendMessage("invalid number format");
+            player.sendMessage(messageManager.get("invalidNumberFormat"));
+            return true;
+        }
+        AnimBuilder anim = manager.getAnimBuilder(player);
+        if (anim == null) {
+            player.sendMessage(messageManager.get("anim.notInBuilderMode"));
+            return true;
+        }
+        if (anim.isFirstPointSet() && anim.isSecondPointSet()) {
+            player.sendMessage(messageManager.get("anim.regionAlreadySpecified"));
             return true;
         }
         if (first) {
