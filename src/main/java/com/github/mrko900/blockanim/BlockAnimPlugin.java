@@ -34,7 +34,7 @@ public class BlockAnimPlugin extends JavaPlugin {
         Map<String, AnimCommand> executors = new HashMap<>();
         animManager = new AnimManager(this);
         executors.put("new", new AnimNewCommand(animBuilderManager, messageManager));
-        executors.put("phase", new AnimSavePhaseCommand(animBuilderManager));
+        executors.put("phase", new AnimSavePhaseCommand(animBuilderManager, messageManager));
         executors.put("save", new AnimSaveCommand(animBuilderManager, getDataFolder().getPath()));
         executors.put("play", new AnimPlayCommand(animManager));
         executors.put("stop", new AnimStopCommand(animManager));

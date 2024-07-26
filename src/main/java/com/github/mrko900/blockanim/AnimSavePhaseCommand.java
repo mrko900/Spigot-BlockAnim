@@ -1,15 +1,15 @@
 package com.github.mrko900.blockanim;
 
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class AnimSavePhaseCommand implements AnimCommand {
-    AnimBuilderManager manager;
+    private AnimBuilderManager manager;
+    private MessageManager messageManager;
 
-    public AnimSavePhaseCommand(AnimBuilderManager manager) {
+    public AnimSavePhaseCommand(AnimBuilderManager manager, MessageManager messageManager) {
         this.manager = manager;
+        this.messageManager = messageManager;
     }
 
     @Override
@@ -42,7 +42,7 @@ public class AnimSavePhaseCommand implements AnimCommand {
         phase.saveBlocks(
                 builder.getX0(), builder.getY0(), builder.getZ0(), builder.getX1(), builder.getY1(), builder.getZ1()
         );
-        player.sendMessage("phase complete");
+        player.sendMessage(messageManager.get("anim.phase") + builder.getPhaseCount());
         return true;
     }
 }

@@ -24,6 +24,10 @@ public class AnimBuilder {
         return phases.getLast();
     }
 
+    public int getPhaseCount() {
+        return phases.size();
+    }
+
     public String getName() {
         return name;
     }
